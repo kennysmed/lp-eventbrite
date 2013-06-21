@@ -1,4 +1,5 @@
 # coding: utf-8
+require 'active_support/all'
 require 'eventbrite-client'
 require 'oauth2'
 require 'sinatra'
@@ -88,19 +89,41 @@ end
 get '/edition/' do
   return 401, "No access_token received" if !params[:access_token]
 
-  eb_client = EventbriteClient.new({:access_token => params[:access_token]})
+  access_token = params[:access_token]
+  local_delivery_time = params[:local_delivery_time]
 
-  response = eb_client.user_list_tickets({:type => 'all'})
+  eb_client = EventbriteClient.new({:access_token => access_token})
 
-  p response
-  # if NOCONTENT
-  #   etag Digest::MD5.hexdigest(UNIQUE_ID + Date.today.strftime('%d%m%Y'))
-  #   return 204, "No content."
-  # end
+  begin
+    response = eb_client.user_list_tickets({:type => 'all'})
+  rescue RuntimeError => error
+    # Yeah, when there are no results, Eventbrite seems to report an 'error',
+    # which eventbrite-client raises as a RuntimeError.
+    etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
+    return 204, "No tickets found: #{error}"
+  rescue => error
+    return 500, "Something went wrong fetching tickets for the user: #{error}"
+  end
+
+  printer_time = Time.strptime(local_delivery_time, '%Y-%m-%dT%H:%M:%S%z')
+
+  response['user_tickets'][1]['orders'].each do |order|
+    # The timezone string is like 'Europe/London'.
+    Time.zone = order['order']['event']['timezone']
+    event_time = Time.zone.parse(order['order']['event']['start_date'])
+
+    p "PRINTER: #{printer_time}, EVENT: #{event_time}"
+
+    if event_time - printer_time < 86400
+      p "EVENT #{order['order']['event']['title']} is within 24 hours"
+    end
+
+  end
+
 
 
   # Using id or whatever user-unique entity we have at this point:
-  etag Digest::MD5.hexdigest(UNIQUE_ID + Date.today.strftime('%d%m%Y'))
+  etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
   # Testing, always changing etag:
   # etag Digest::MD5.hexdigest(Time.now.strftime('%S%M%H-%d%m%Y'))
   erb :publication

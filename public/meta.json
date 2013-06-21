@@ -5,7 +5,7 @@
     "description": "Receive reminders of your upcoming events from your Eventbrite account",
     "delivered_on": "every day",
     "delivery_type": "fetch",
-    "send_timezone_info": false,
+    "send_timezone_info": true,
     "send_delivery_count": false,
     "external_configuration": true,
     "config" : {

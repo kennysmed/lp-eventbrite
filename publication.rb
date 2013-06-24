@@ -95,12 +95,21 @@ get '/edition/' do
 
   eb_client = EventbriteClient.new({:access_token => access_token})
 
+  # About the user:
+  @user = []
   # Events the user has organised:
   event_data = []
   # Tickets the user has bought:
   ticket_data = []
 
-  # Get the raw event and ticket data from Eventbrite API:
+  # Get the raw user, event, ticket data from Eventbrite API:
+
+  begin
+    response = eb_client.user_get()
+    @user = response['user']
+  rescue => error
+    return 500, "Something went wrong fetching the user's data: #{error}"
+  end
 
   begin
     response = eb_client.user_list_events({:do_not_display => 'style,tickets'})
@@ -147,8 +156,6 @@ get '/edition/' do
     Time.zone = event['event']['timezone']
     event_time = Time.zone.parse(event['event']['start_date'])
 
-    p "\nEVENT:\n"
-    pp event['event']
     if event_time - printer_time_tomorrow_midnight < 86400
       @events << event['event']
       event_ids << event['event']['id']
@@ -160,8 +167,6 @@ get '/edition/' do
     Time.zone = order['order']['event']['timezone']
     event_time = Time.zone.parse(order['order']['event']['start_date'])
 
-    p "\nTICKET:\n"
-    pp order['order']
     # We want tickets for events starting tomorrow, but not if we've already
     # got them listed as events the user has organised.
     if event_time - printer_time_tomorrow_midnight < 86400
@@ -182,6 +187,14 @@ end
 
 
 get '/sample/' do
+  @user = {
+    "first_name": "Francis",
+    "last_name": "Overton",
+    "user_id": 999999,
+    "date_modified": "2013-06-24 05:29:28",
+    "date_created": "2009-10-11 09:40:05",
+    "email": "francis@example.com"
+  }
   @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
   @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )
 

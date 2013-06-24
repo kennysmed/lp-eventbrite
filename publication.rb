@@ -72,12 +72,23 @@ helpers do
   def format_address(venue)
     lines = []
     # The order we want the liens to appear in:
-    keys = ['name', 'address', 'address_2', 'city', 'postal_code']
-    keys.each do |key|
-      if venue.include?(key) && venue[key] != ''
-        lines << venue[key]
-      end
+    if venue.include?('name') && venue['name'] != ''
+      lines << "#{venue['name']}"
     end
+    if venue.include?('address') && venue['address'] != ''
+      lines << "#{venue['address']}"
+    end
+    if venue.include?('address_2') && venue['address_2'] != ''
+      lines << "#{venue['address_2']}"
+    end
+    if venue.include?('city') && venue['city'] != '' && venue.include?('postal_code') && venue['postal_code'] != ''
+      lines << "#{venue['city']} #{venue['postal_code']}"
+    elsif venue.include?('city') && venue['city'] != ''
+      lines << "#{venue['city']}"
+    elsif venue.include?('postal_code') && venue['postal_code'] != ''
+      lines << "#{venue['postal_code']}"
+    end
+    lines[0] = "<strong>#{lines[0]}</strong>"
     lines.join('<br />')
   end
 

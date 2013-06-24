@@ -94,32 +94,64 @@ get '/edition/' do
 
   eb_client = EventbriteClient.new({:access_token => access_token})
 
+  # Tickets the user has bought:
+  tickets = []
+  # Events the user has organised:
+  events = []
+
   begin
     response = eb_client.user_list_tickets({:type => 'all'})
+    tickets = response['user_tickets'][1]['orders']
   rescue RuntimeError => error
     # Yeah, when there are no results, Eventbrite seems to report an 'error',
     # which eventbrite-client raises as a RuntimeError.
-    etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
-    return 204, "No tickets found: #{error}"
   rescue => error
     return 500, "Something went wrong fetching tickets for the user: #{error}"
   end
 
-  printer_time = Time.strptime(local_delivery_time, '%Y-%m-%dT%H:%M:%S%z')
+  begin
+    response = eb_client.user_list_events({:do_not_display => 'style,tickets'})
+    events = response['events']
+  rescue RuntimeError => error
+    # No events.
+  rescue => error
+    return 500, "Something went wrong fetching events for the user: #{error}"
+  end
 
-  response['user_tickets'][1]['orders'].each do |order|
+  if tickets.length == 0 && events.length == 0
+    etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
+    return 204, "No tickets found."
+  end
+
+  printer_time = Time.strptime(local_delivery_time, '%Y-%m-%dT%H:%M:%S%z')
+  printer_time_tomorrow = printer_time + 86400
+  printer_time_tomorrow_midnight = Time.strptime(
+    printer_time_tomorrow.strftime('%Y-%m-%dT00:00:00%z'),'%Y-%m-%dT%H:%M:%S%z'
+  )
+
+  tickets.each do |order|
     # The timezone string is like 'Europe/London'.
     Time.zone = order['order']['event']['timezone']
     event_time = Time.zone.parse(order['order']['event']['start_date'])
 
-    p "PRINTER: #{printer_time}, EVENT: #{event_time}"
+    p "PRINTER: #{printer_time_tomorrow_midnight}, TICKET: #{event_time}"
 
-    if event_time - printer_time < 86400
-      p "EVENT #{order['order']['event']['title']} is within 24 hours"
+    if event_time - printer_time_tomorrow_midnight < 86400
+      p "TICKET #{order['order']['event']['title']} starts tomorrow."
     end
-
   end
 
+  events.each do |event|
+    # The timezone string is like 'Europe/London'.
+    Time.zone = event['event']['timezone']
+    event_time = Time.zone.parse(event['event']['start_date'])
+
+    p "PRINTER: #{printer_time_tomorrow_midnight}, EVENT: #{event_time}"
+
+    if event_time - printer_time_tomorrow_midnight < 86400
+      p "EVENT #{event['event']['title']} starts tomorrow."
+    end
+  end
 
 
   # Using id or whatever user-unique entity we have at this point:

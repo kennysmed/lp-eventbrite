@@ -48,7 +48,7 @@
 	  "repeats": "no",
 	  "capacity": 0,
 	  "description": "<P>Some event details here.</P>\r\n<P>And another one.</P>",
-	  "end_date": "2013-07-31 16:00:00",
+	  "end_date": "2013-07-25 16:00:00",
 	  "title": "Paul's Private Party",
 	  "url": "http://www.eventbrite.com/event/9876543211/?ref=ebapi",
 	  "timezone_offset": "GMT+0100",
@@ -70,7 +70,7 @@
 	  "modified": "2013-06-21 06:57:19",
 	  "created": "2013-06-21 06:54:14",
 	  "privacy": "Private",
-	  "start_date": "2013-07-31 13:00:00",
+	  "start_date": "2013-07-25 13:00:00",
 	  "num_attendee_rows": 1.0,
 	  "timezone": "Europe/London",
 	  "organizer": {
@@ -80,7 +80,7 @@
 	    "id": 1234567891,
 	    "name": "Org Corp Ltd"
 	  },
-	  "password": "harryhill",
+	  "password": "seekrit",
 	  "id": 9876543211 
 	}
 ]

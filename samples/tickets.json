@@ -76,7 +76,7 @@
 	  "created": "2013-06-21 06:57:47",
 	  "event": {
 	    "description": "<P>Some event details here.</P>\r\n<P>And another one.</P>",
-	    "end_date": "2013-07-31 16:00:00",
+	    "end_date": "2013-06-25 16:00:00",
 	    "title": "Seminar Seminar",
 	    "url": "http://www.eventbrite.com/event/2222222222",
 	    "privacy": "Private",
@@ -94,7 +94,7 @@
 	      "id": 2222222222,
 	      "Lat-Long": "51.523126 / -0.08702"
 	    },
-	    "start_date": "2013-07-31 13:00:00",
+	    "start_date": "2013-06-25 13:00:00",
 	    "logo_ssl": "https://www.eventbrite.com/php/logo.php?id=",
 	    "logo": "http://eventbrite-s3.s3.amazonaws.com/eventlogos/167336/",
 	    "timezone": "Europe/London",

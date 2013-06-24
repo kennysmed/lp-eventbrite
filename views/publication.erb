@@ -19,5 +19,37 @@
 </head>
 <body>
 
+  <h1>Eventbrite</h1>
+
+  <p>Happening tomorrow for <%= @user['first_name'] %> <%= @user['last_name'] %></p>
+
+  <% if @events.length > 0 %>
+    <h2>Your <%= pluralize(@events.length, 'Event') %></h2>
+
+    <% @events.each do |ev| %>
+      <h3><%= ev['title'] %></h3>
+      <% if ev['organizer']['name'] %>
+        <p><%= ev['organizer']['name'] %></p>
+      <% end %>
+      <p><%= format_time_period(ev['start_date'], ev['end_date'], ev['timezone']) %></p>
+      <p><%= format_address(ev['venue']) %></p>
+      <p><%= format_url(ev['url']) %></p>
+    <% end %>
+  <% end %>
+
+  <% if @tickets.length > 0 %>
+    <h2>Your <%= pluralize(@tickets.length, 'Ticket') %></h2>
+
+    <% @tickets.each do |tk| %>
+      <h3><%= tk['event']['title'] %></h3>
+      <% if tk['event']['organizer']['name'] %>
+        <p><%= tk['event']['organizer']['name'] %></p>
+      <% end %>
+      <p><%= format_time_period(tk['event']['start_date'], tk['event']['end_date'], tk['event']['timezone']) %></p>
+      <p><%= format_address(tk['event']['venue']) %></p>
+      <p><%= format_url(tk['event']['url']) %></p>
+    <% end %>
+  <% end %>
+
 </body>
 </html>

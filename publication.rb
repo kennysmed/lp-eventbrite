@@ -26,10 +26,6 @@ end
 
 
 helpers do
-  def format_title
-    "Eventbrite"
-  end
-
   def auth_client 
     @auth_client ||= OAuth2::Client.new(
       settings.eventbrite_application_key, settings.eventbrite_client_secret, {
@@ -38,7 +34,58 @@ helpers do
         :token_url => '/oauth/token'
       }
     )
-  end 
+  end
+
+  def format_title
+    "Eventbrite"
+  end
+
+  # Used in the template for pluralizing words.
+  def pluralize(num, word, ext='s')
+    if num.to_i == 1
+      return num.to_s + ' ' + word
+    else
+      return num.to_s + ' ' + word + ext
+    end
+  end
+
+  # Formats a time period nicely.
+  # start_time and end_time are like '2013-06-25 09:00:00'.
+  # timezone is like 'Europe/London'.
+  def format_time_period(start_time, end_time, timezone)
+    Time.zone = timezone
+    st = Time.zone.parse(start_time)
+    et = Time.zone.parse(end_time)
+    if st.strftime('%Y') != et.strftime('%Y')
+      "#{st.strftime('%H:%M %a, %-d %b %Y')} to #{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}"
+    elsif st.strftime('%m') != et.strftime('%m')
+      "#{st.strftime('%H:%M %a, %-d %b')} to #{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}"
+    elsif st.strftime('%d') != et.strftime('%d')
+      "#{st.strftime('%H:%M %a, %-d %b')} to #{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}"
+    else
+      "#{st.strftime('%H:%M')} to #{et.strftime('%H:%M, %a, %-d %b %Y (%Z)')}"
+    end
+  end
+
+
+  # Returns the HTML for a venue's address.
+  def format_address(venue)
+    lines = []
+    # The order we want the liens to appear in:
+    keys = ['name', 'address', 'address_2', 'city', 'postal_code']
+    keys.each do |key|
+      if venue.include?(key) && venue[key] != ''
+        lines << venue[key]
+      end
+    end
+    lines.join('<br />')
+  end
+
+  # Just trim off the '?ref=ebapi' from URLs as it makes them too long.
+  def format_url(url)
+    url.sub!(/\?ref\=ebapi/, '')
+    url.sub!(/http\:\/\//, '')
+  end
 end
 
 
@@ -188,12 +235,12 @@ end
 
 get '/sample/' do
   @user = {
-    :first_name => "Francis",
-    :last_name => "Overton",
-    :user_id => 999999,
-    :date_modified => "2013-06-24 05:29:28",
-    :date_created => "2009-10-11 09:40:05",
-    :email => "francis@example.com"
+    'first_name' => "Francis",
+    'last_name' => "Overton",
+    'user_id' => 999999,
+    'date_modified' => "2013-06-24 05:29:28",
+    'date_created' => "2009-10-11 09:40:05",
+    'email' => "francis@example.com"
   }
   @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
   @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )

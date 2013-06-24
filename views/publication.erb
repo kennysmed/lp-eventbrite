@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <html>
 <head>
-  <title>TITLE</title>
+  <title>Eventbrite</title>
 
   <style type="text/css">
     body {
@@ -14,40 +14,77 @@
       font-family: Arial, sans-serif;
       font-size: 16px;
     }
+    h1, h2, h3, p {
+      margin: 0 0 10px 0;
+      line-height: 20px
+    }
+    h1 {
+      font-size: 24px;
+      line-height: 28px;
+      margin-bottom: 20px;
+    }
+    .event {
+      -webkit-border-radius: 8px;
+      border-radius: 8px;
+      border: 2px solid #000;
+      padding-top: 10px;
+      margin-bottom: 20px;
+    }
+      .event .event-title,
+      .event p {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .event-title {
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
+        line-height: 30px;
+      }
+      .event-org {
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+      }
+      .event-url {
+        border-top: 2px solid #000;
+        padding-top: 10px;
+      }
+
   </style>
 
 </head>
 <body>
 
-  <h1>Eventbrite</h1>
-
-  <p>Happening tomorrow for <%= @user['first_name'] %> <%= @user['last_name'] %></p>
+  <h1>
+    Eventbrite Alert for<br />
+    <%= @user['first_name'] %> <%= @user['last_name'] %>
+  </h1>
 
   <% if @events.length > 0 %>
-    <h2>Your <%= pluralize(@events.length, 'Event') %></h2>
+    <h2>
+      <% if @events.length == 1 %>
+        You have an event tomorrow!
+      <% else %>
+        <%= @events.length %> of your events are tomorrow!
+      <% end %>
+    </h2>
 
     <% @events.each do |ev| %>
-      <h3><%= ev['title'] %></h3>
-      <% if ev['organizer']['name'] %>
-        <p><%= ev['organizer']['name'] %></p>
-      <% end %>
-      <p><%= format_time_period(ev['start_date'], ev['end_date'], ev['timezone']) %></p>
-      <p><%= format_address(ev['venue']) %></p>
-      <p><%= format_url(ev['url']) %></p>
+      <%= erb :partial_event, :locals => {:ev => ev} %>
     <% end %>
   <% end %>
 
   <% if @tickets.length > 0 %>
-    <h2>Your <%= pluralize(@tickets.length, 'Ticket') %></h2>
+    <h2>
+      <% if @tickets.length == 1 %>
+        You have a ticket for tomorrow!
+      <% else %>
+        You have <%= @tickets.length %> tickets for tomorrow!
+      <% end %>
+    </h2>
 
     <% @tickets.each do |tk| %>
-      <h3><%= tk['event']['title'] %></h3>
-      <% if tk['event']['organizer']['name'] %>
-        <p><%= tk['event']['organizer']['name'] %></p>
-      <% end %>
-      <p><%= format_time_period(tk['event']['start_date'], tk['event']['end_date'], tk['event']['timezone']) %></p>
-      <p><%= format_address(tk['event']['venue']) %></p>
-      <p><%= format_url(tk['event']['url']) %></p>
+      <%= erb :partial_event, :locals => {:ev => tk['event']} %>
     <% end %>
   <% end %>
 

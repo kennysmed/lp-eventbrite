@@ -96,6 +96,8 @@ helpers do
   def format_url(url)
     url.sub!(/\?ref\=ebapi/, '')
     url.sub!(/http\:\/\//, '')
+    url.sub!(/\/$/, '')
+    return url
   end
 end
 

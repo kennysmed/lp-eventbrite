@@ -1,0 +1,10 @@
+<div class="event">
+	<h3 class="event-title"><%= ev['title'] %></h3>
+	<% if ev['organizer']['name'] %>
+		<p class="event-org"><%= ev['organizer']['name'] %></p>
+	<% end %>
+	<p class="event-time"><%= format_time_period(ev['start_date'], ev['end_date'], ev['timezone']) %></p>
+	<p class="event-address"><%= format_address(ev['venue']) %></p>
+	<p class="event-url"><%= format_url(ev['url']) %></p>
+</div>
+

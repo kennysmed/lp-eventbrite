@@ -188,12 +188,12 @@ end
 
 get '/sample/' do
   @user = {
-    "first_name": "Francis",
-    "last_name": "Overton",
-    "user_id": 999999,
-    "date_modified": "2013-06-24 05:29:28",
-    "date_created": "2009-10-11 09:40:05",
-    "email": "francis@example.com"
+    :first_name => "Francis",
+    :last_name => "Overton",
+    :user_id => 999999,
+    :date_modified => "2013-06-24 05:29:28",
+    :date_created => "2009-10-11 09:40:05",
+    :email => "francis@example.com"
   }
   @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
   @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )

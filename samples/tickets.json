@@ -1,116 +1,116 @@
 [
 	{
-	  "status"=>"Order Completed",
-	  "gross"=>"0.00",
-	  "first_name"=>"Phil",
-	  "last_name"=>"Gyford",
-	  "attendees"=>[
+	  "status": "Order Completed",
+	  "gross": "0.00",
+	  "first_name": "Phil",
+	  "last_name": "Gyford",
+	  "attendees": [
 	    {
-	      "attendee"=>{
-	        "status"=>"Attending",
-	        "first_name"=>"Phil",
-	        "last_name"=>"Gyford",
-	        "created"=>"2013-06-24 05:29:23",
-	        "modified"=>"2013-06-24 05:29:28",
-	        "id"=>123456789
+	      "attendee": {
+	        "status": "Attending",
+	        "first_name": "Phil",
+	        "last_name": "Gyford",
+	        "created": "2013-06-24 05:29:23",
+	        "modified": "2013-06-24 05:29:28",
+	        "id": 123456789
 	      }
 	    }
 	  ],
-	  "created"=>"2013-06-24 05:29:23",
-	  "event"=>{
-	    "description"=>"<P>A description of the event is here.</P>\r\n<P>This is another paragraph, <STRONG>with some bold text</STRONG>.</P>\r\n<P><EM>And here's an italic paragraph.</EM></P>",
-	    "end_date"=>"2013-06-28 16:00:00",
-	    "title"=>"Cakepocalypse!",
-	    "url"=>"http://cakepocalypse.eventbrite.com",
-	    "privacy"=>"Public",
-	    "venue"=>{
-	      "city"=>"Houston",
-	      "name"=>"Cake Palace",
-	      "country"=>"United States",
-	      "region"=>"TX",
-	      "longitude"=>-95.106635,
-	      "postal_code"=>"77058",
-	      "address_2"=>"",
-	      "address"=>"2600 Bay Area Blvd",
-	      "latitude"=>29.577086,
-	      "country_code"=>"US",
-	      "id"=>1234569,
-	      "Lat-Long"=>"29.577086 / -95.106635"
+	  "created": "2013-06-24 05:29:23",
+	  "event": {
+	    "description": "<P>A description of the event is here.</P>\r\n<P>This is another paragraph, <STRONG>with some bold text</STRONG>.</P>\r\n<P><EM>And here's an italic paragraph.</EM></P>",
+	    "end_date": "2013-06-28 16:00:00",
+	    "title": "Cakepocalypse!",
+	    "url": "http://cakepocalypse.eventbrite.com",
+	    "privacy": "Public",
+	    "venue": {
+	      "city": "Houston",
+	      "name": "Cake Palace",
+	      "country": "United States",
+	      "region": "TX",
+	      "longitude": -95.106635,
+	      "postal_code": "77058",
+	      "address_2": "",
+	      "address": "2600 Bay Area Blvd",
+	      "latitude": 29.577086,
+	      "country_code": "US",
+	      "id": 1234569,
+	      "Lat-Long": "29.577086 / -95.106635"
 	    },
-	    "start_date"=>"2013-06-25 09:00:00",
-	    "logo_ssl"=>"https://www.eventbrite.com/php/logo.php?id=7207528913-2.jpg",
-	    "logo"=>"http://eventbrite-s3.s3.amazonaws.com/eventlogos/167336/7207528913-2.jpg",
-	    "timezone"=>"Europe/London",
-	    "organizer"=>{
-	      "url"=>"http://www.eventbrite.com/org/999999999",
-	      "description"=>"",
-	      "long_description"=>"",
-	      "id"=>999999999,
-	      "name"=>"Cake Bakes Inc"
+	    "start_date": "2013-06-25 09:00:00",
+	    "logo_ssl": "https://www.eventbrite.com/php/logo.php?id=7207528913-2.jpg",
+	    "logo": "http://eventbrite-s3.s3.amazonaws.com/eventlogos/167336/7207528913-2.jpg",
+	    "timezone": "Europe/London",
+	    "organizer": {
+	      "url": "http://www.eventbrite.com/org/999999999",
+	      "description": "",
+	      "long_description": "",
+	      "id": 999999999,
+	      "name": "Cake Bakes Inc"
 	    },
-	    "id"=>2468013579
+	    "id": 2468013579
 	  },
-	  "modified"=>"2013-06-24 05:29:28",
-	  "delivery_method"=>"eTicket",
-	  "currency"=>"USD",
-	  "payment_type"=>"free",
-	  "id"=>1357924680
+	  "modified": "2013-06-24 05:29:28",
+	  "delivery_method": "eTicket",
+	  "currency": "USD",
+	  "payment_type": "free",
+	  "id": 1357924680
 	},
 	{
-	  "status"=>"Order Completed",
-	  "gross"=>"0.00",
-	  "first_name"=>"Phil",
-	  "last_name"=>"Gyford",
-	  "attendees"=>[
+	  "status": "Order Completed",
+	  "gross": "0.00",
+	  "first_name": "Phil",
+	  "last_name": "Gyford",
+	  "attendees": [
 	    {
-	      "attendee"=>{
-	        "status"=>"Attending",
-	        "first_name"=>"Phil",
-	        "last_name"=>"Gyford",
-	        "created"=>"2013-06-21 06:57:47",
-	        "modified"=>"2013-06-21 06:57:52",
-	        "id"=>123456789
+	      "attendee": {
+	        "status": "Attending",
+	        "first_name": "Phil",
+	        "last_name": "Gyford",
+	        "created": "2013-06-21 06:57:47",
+	        "modified": "2013-06-21 06:57:52",
+	        "id": 123456789
 	      }
 	    }
 	  ],
-	  "created"=>"2013-06-21 06:57:47",
-	  "event"=>{
-	    "description"=>"<P>Some event details here.</P>\r\n<P>And another one.</P>",
-	    "end_date"=>"2013-07-31 16:00:00",
-	    "title"=>"Seminar Seminar",
-	    "url"=>"http://www.eventbrite.com/event/2222222222",
-	    "privacy"=>"Private",
-	    "venue"=>{
-	      "city"=>"London",
-	      "name"=>"The Expo Hall",
-	      "country"=>"United Kingdom",
-	      "region"=>"London",
-	      "longitude"=>-0.08702,
-	      "postal_code"=>"EC1Y 1AA",
-	      "address_2"=>"",
-	      "address"=>"25 City Road",
-	      "latitude"=>51.523126,
-	      "country_code"=>"GB",
-	      "id"=>2222222222,
-	      "Lat-Long"=>"51.523126 / -0.08702"
+	  "created": "2013-06-21 06:57:47",
+	  "event": {
+	    "description": "<P>Some event details here.</P>\r\n<P>And another one.</P>",
+	    "end_date": "2013-07-31 16:00:00",
+	    "title": "Seminar Seminar",
+	    "url": "http://www.eventbrite.com/event/2222222222",
+	    "privacy": "Private",
+	    "venue": {
+	      "city": "London",
+	      "name": "The Expo Hall",
+	      "country": "United Kingdom",
+	      "region": "London",
+	      "longitude": -0.08702,
+	      "postal_code": "EC1Y 1AA",
+	      "address_2": "",
+	      "address": "25 City Road",
+	      "latitude": 51.523126,
+	      "country_code": "GB",
+	      "id": 2222222222,
+	      "Lat-Long": "51.523126 / -0.08702"
 	    },
-	    "start_date"=>"2013-07-31 13:00:00",
-	    "logo_ssl"=>"https://www.eventbrite.com/php/logo.php?id=",
-	    "logo"=>"http://eventbrite-s3.s3.amazonaws.com/eventlogos/167336/",
-	    "timezone"=>"Europe/London",
-	    "organizer"=>{
-	      "url"=>"http://www.eventbrite.com/org/333333333",
-	      "description"=>"",
-	      "long_description"=>"",
-	      "id"=>333333333,
-	      "name"=>"My Big Organization Ltd"
+	    "start_date": "2013-07-31 13:00:00",
+	    "logo_ssl": "https://www.eventbrite.com/php/logo.php?id=",
+	    "logo": "http://eventbrite-s3.s3.amazonaws.com/eventlogos/167336/",
+	    "timezone": "Europe/London",
+	    "organizer": {
+	      "url": "http://www.eventbrite.com/org/333333333",
+	      "description": "",
+	      "long_description": "",
+	      "id": 333333333,
+	      "name": "My Big Organization Ltd"
 	    },
-	    "id"=>4444444444
+	    "id": 4444444444
 	  },
-	  "modified"=>"2013-06-21 06:57:52",
-	  "delivery_method"=>"eTicket",
-	  "currency"=>"GBP",
-	  "payment_type"=>"free",
-	  "id"=>878787878
+	  "modified": "2013-06-21 06:57:52",
+	  "delivery_method": "eTicket",
+	  "currency": "GBP",
+	  "payment_type": "free",
+	  "id": 878787878
 	}
 ]

@@ -1,6 +1,7 @@
 # coding: utf-8
 require 'active_support/all'
 require 'eventbrite-client'
+require 'json'
 require 'oauth2'
 require 'sinatra'
 require 'sinatra/config_file'
@@ -94,14 +95,25 @@ get '/edition/' do
 
   eb_client = EventbriteClient.new({:access_token => access_token})
 
-  # Tickets the user has bought:
-  tickets = []
   # Events the user has organised:
-  events = []
+  event_data = []
+  # Tickets the user has bought:
+  ticket_data = []
+
+  # Get the raw event and ticket data from Eventbrite API:
+
+  begin
+    response = eb_client.user_list_events({:do_not_display => 'style,tickets'})
+    event_data = response['events']
+  rescue RuntimeError => error
+    # No events.
+  rescue => error
+    return 500, "Something went wrong fetching events for the user: #{error}"
+  end
 
   begin
     response = eb_client.user_list_tickets({:type => 'all'})
-    tickets = response['user_tickets'][1]['orders']
+    ticket_data = response['user_tickets'][1]['orders']
   rescue RuntimeError => error
     # Yeah, when there are no results, Eventbrite seems to report an 'error',
     # which eventbrite-client raises as a RuntimeError.
@@ -109,50 +121,57 @@ get '/edition/' do
     return 500, "Something went wrong fetching tickets for the user: #{error}"
   end
 
-  begin
-    response = eb_client.user_list_events({:do_not_display => 'style,tickets'})
-    events = response['events']
-  rescue RuntimeError => error
-    # No events.
-  rescue => error
-    return 500, "Something went wrong fetching events for the user: #{error}"
-  end
-
-  if tickets.length == 0 && events.length == 0
+  if ticket_data.length == 0 && event_data.length == 0
     etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
     return 204, "No tickets found."
   end
 
+  # We have some events/tickets, so we'll now see if they're tomorrow.
+
+  # Get the next midnight datetime:
   printer_time = Time.strptime(local_delivery_time, '%Y-%m-%dT%H:%M:%S%z')
   printer_time_tomorrow = printer_time + 86400
   printer_time_tomorrow_midnight = Time.strptime(
     printer_time_tomorrow.strftime('%Y-%m-%dT00:00:00%z'),'%Y-%m-%dT%H:%M:%S%z'
   )
 
-  tickets.each do |order|
-    # The timezone string is like 'Europe/London'.
-    Time.zone = order['order']['event']['timezone']
-    event_time = Time.zone.parse(order['order']['event']['start_date'])
+  # What we'll pass to the template.
+  @events = []
+  @tickets = []
+  # We'll keep track of any events we're going to display,
+  # just so we can compare with tickets:
+  event_ids = []
 
-    p "PRINTER: #{printer_time_tomorrow_midnight}, TICKET: #{event_time}"
-
-    if event_time - printer_time_tomorrow_midnight < 86400
-      p "TICKET #{order['order']['event']['title']} starts tomorrow."
-    end
-  end
-
-  events.each do |event|
+  event_data.each do |event|
     # The timezone string is like 'Europe/London'.
     Time.zone = event['event']['timezone']
     event_time = Time.zone.parse(event['event']['start_date'])
 
-    p "PRINTER: #{printer_time_tomorrow_midnight}, EVENT: #{event_time}"
-
+    p "\nEVENT:\n"
+    pp event['event']
     if event_time - printer_time_tomorrow_midnight < 86400
-      p "EVENT #{event['event']['title']} starts tomorrow."
+      @events << event['event']
+      event_ids << event['event']['id']
     end
   end
 
+  ticket_data.each do |order|
+    # The timezone string is like 'Europe/London'.
+    Time.zone = order['order']['event']['timezone']
+    event_time = Time.zone.parse(order['order']['event']['start_date'])
+
+    p "\nTICKET:\n"
+    pp order['order']
+    # We want tickets for events starting tomorrow, but not if we've already
+    # got them listed as events the user has organised.
+    if event_time - printer_time_tomorrow_midnight < 86400
+      if ! event_ids.include?(order['order']['event']['id'])
+        @tickets << order['order']
+      end
+    end
+  end
+
+  # @events and @tickets should now contain stuff we actually want to print.
 
   # Using id or whatever user-unique entity we have at this point:
   etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
@@ -163,6 +182,9 @@ end
 
 
 get '/sample/' do
+  @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
+  @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )
+
   etag Digest::MD5.hexdigest('sample' + Date.today.strftime('%d%m%Y'))
   erb :publication
 end

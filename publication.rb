@@ -253,7 +253,38 @@ get '/edition/' do
 end
 
 
-get '/sample/' do
+# /sample/ will show the default sample.
+# The URL can be extended to show different numbers of events and tickets, eg:
+# /sample/events/2/
+# /sample/events/1/tickets/2/
+# /sample/tickets/0/events/1/
+# /sample/tickets/2/events/2/
+# etc.
+# Number we can display depends on how many events and tickets are in the
+# sample data (2 of each as of this writing).
+get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
+
+  if params[:captures]
+    show_events = 0
+    show_tickets = 0 
+    if params[:captures][0] == 'events'
+      show_events = params[:captures][1].to_i
+    end
+    if params[:captures][2] == 'events'
+      show_events = params[:captures][3].to_i
+    end
+    if params[:captures][0] == 'tickets'
+      show_tickets = params[:captures][1].to_i
+    end
+    if params[:captures][2] == 'tickets'
+      show_tickets = params[:captures][3].to_i
+    end
+  else
+    # Standard sample.    
+    show_events = 0 
+    show_tickets = 1
+  end
+
   @user = {
     'first_name' => "Francis",
     'last_name' => "Overton",
@@ -262,8 +293,20 @@ get '/sample/' do
     'date_created' => "2009-10-11 09:40:05",
     'email' => "francis@example.com"
   }
-  @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
-  @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )
+
+  if show_events == 0
+    @events = []
+  else
+    @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
+    @events = @events[0, show_events]
+  end
+
+  if show_tickets == 0
+    @tickets = []
+  else
+    @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )
+    @tickets = @tickets[0, show_tickets]
+  end
 
   etag Digest::MD5.hexdigest('sample' + Date.today.strftime('%d%m%Y'))
   erb :publication

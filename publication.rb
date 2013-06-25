@@ -260,8 +260,8 @@ end
 # /sample/tickets/0/events/1/
 # /sample/tickets/2/events/2/
 # etc.
-# Number we can display depends on how many events and tickets are in the
-# sample data (2 of each as of this writing).
+# We only have 2 events/tickets in sample data, so further items will be
+# repeats of those.
 get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
 
   if params[:captures]
@@ -299,6 +299,12 @@ get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
   else
     @events = JSON.parse( IO.read(Dir.pwd + '/samples/events.json') )
     @events = @events[0, show_events]
+    # A bit ugly, but add repeating events on until we hit our required number.
+    if show_events > 2
+      for n in 2...show_events
+        @events[n] = @events[n % 2]
+      end
+    end
   end
 
   if show_tickets == 0
@@ -306,6 +312,12 @@ get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
   else
     @tickets = JSON.parse( IO.read(Dir.pwd + '/samples/tickets.json') )
     @tickets = @tickets[0, show_tickets]
+    # A bit ugly, but add repeating tickets on until we hit our required number.
+    if show_tickets > 2
+      for n in 2...show_tickets
+        @tickets[n] = @tickets[n % 2]
+      end
+    end
   end
 
   etag Digest::MD5.hexdigest('sample' + Date.today.strftime('%d%m%Y'))

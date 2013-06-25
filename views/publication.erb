@@ -13,7 +13,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
-    h1, h2, h3, p {
+    h1, h2, h3, h4, p, li {
       margin: 0 0 12px 0;
       padding: 0;
       font-size: 20px;
@@ -56,6 +56,20 @@
         padding-top: 12px;
         font-size: 16px;
       }
+    .events-list-title {
+      padding-left: 14px;
+      margin-top: -10px;
+      margin-bottom: 0;
+    }
+    .events-list {
+      margin: 0 0 25px 0;
+      padding: 0;
+    }
+      .events-list-item {
+        padding: 0 0 0 10px;
+        margin: 0 0 0 4px;
+        background: url(<%= url('/img/bullet.png') %>) 0 10px no-repeat;
+      }
 
   </style>
 
@@ -76,8 +90,11 @@
       <% end %>
     </h2>
 
-    <% @events.each do |ev| %>
-      <%= erb :partial_event, :locals => {:ev => ev} %>
+    <% @events.each_with_index do |ev, n| %>
+      <%= erb :partial_event, :locals => {:ev => ev, :count => n} %>
+    <% end %>
+    <% if @events.length > 2 %>
+      </ul>
     <% end %>
   <% end %>
 
@@ -90,8 +107,11 @@
       <% end %>
     </h2>
 
-    <% @tickets.each do |tk| %>
-      <%= erb :partial_event, :locals => {:ev => tk['event']} %>
+    <% @tickets.each_with_index do |tk, n| %>
+      <%= erb :partial_event, :locals => {:ev => tk['event'], :count => n} %>
+    <% end %>
+    <% if @tickets.length > 2 %>
+      </ul>
     <% end %>
   <% end %>
 

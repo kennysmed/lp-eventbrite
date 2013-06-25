@@ -155,15 +155,9 @@ get '/edition/' do
 
   eb_client = EventbriteClient.new({:access_token => access_token})
 
-  # About the user:
-  @user = []
-  # Events the user has organised:
-  event_data = []
-  # Tickets the user has bought:
-  ticket_data = []
-
   # Get the raw user, event, ticket data from Eventbrite API:
 
+  @user = []
   begin
     response = eb_client.user_get()
     @user = response['user']
@@ -171,6 +165,8 @@ get '/edition/' do
     return 500, "Something went wrong fetching the user's data: #{error}"
   end
 
+  # Events the user has organised:
+  event_data = []
   begin
     response = eb_client.user_list_events({:do_not_display => 'style,tickets'})
     event_data = response['events']
@@ -180,6 +176,8 @@ get '/edition/' do
     return 500, "Something went wrong fetching events for the user: #{error}"
   end
 
+  # Tickets the user has bought:
+  ticket_data = []
   begin
     response = eb_client.user_list_tickets({:type => 'all'})
     ticket_data = response['user_tickets'][1]['orders']

@@ -12,19 +12,26 @@
       padding: 0;
       margin: 0;
       font-family: Arial, sans-serif;
-      font-size: 16px;
+      font-size: 18px;
     }
     h1, h2, h3, p {
       margin: 0 0 10px 0;
-      line-height: 20px
+      line-height: 22px
     }
     h1 {
       font-size: 24px;
       line-height: 28px;
       margin-bottom: 20px;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 7px 10px 8px 10px;
+    }
+    h2 {
+      font-size: 18px;
+      line-height: 22px;
+      padding: 0 12px;
     }
     .event {
-      -webkit-border-radius: 8px;
       border-radius: 8px;
       border: 2px solid #000;
       padding-top: 10px;
@@ -39,15 +46,19 @@
         margin: 0;
         padding: 0;
         font-size: 24px;
-        line-height: 30px;
+        line-height: 28px;
       }
       .event-org {
         border-bottom: 2px solid #000;
         padding-bottom: 10px;
       }
+      .event-time span {
+        white-space: nowrap;
+      }
       .event-url {
         border-top: 2px solid #000;
         padding-top: 10px;
+        font-size: 16px;
       }
 
   </style>
@@ -56,7 +67,7 @@
 <body>
 
   <h1>
-    Eventbrite Alert for<br />
+    Eventbrite Reminder for<br />
     <%= @user['first_name'] %> <%= @user['last_name'] %>
   </h1>
 
@@ -65,7 +76,7 @@
       <% if @events.length == 1 %>
         You have an event tomorrow!
       <% else %>
-        <%= @events.length %> of your events are tomorrow!
+        <%= format_number_text(@events.length).capitalize %> of your events are tomorrow!
       <% end %>
     </h2>
 
@@ -79,7 +90,7 @@
       <% if @tickets.length == 1 %>
         You have a ticket for tomorrow!
       <% else %>
-        You have <%= @tickets.length %> tickets for tomorrow!
+        You have <%= format_number_text(@tickets.length) %> tickets for tomorrow!
       <% end %>
     </h2>
 

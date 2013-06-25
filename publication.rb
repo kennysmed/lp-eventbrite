@@ -57,13 +57,13 @@ helpers do
     st = Time.zone.parse(start_time)
     et = Time.zone.parse(end_time)
     if st.strftime('%Y') != et.strftime('%Y')
-      "#{st.strftime('<strong>%H:%M</strong> %a, %-d %b %Y')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
+      "#{st.strftime('%H:%M %a, %-d %b %Y')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
     elsif st.strftime('%m') != et.strftime('%m')
-      "#{st.strftime('<strong>%H:%M</strong> %a, %-d %b')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
+      "#{st.strftime('%H:%M %a, %-d %b')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
     elsif st.strftime('%d') != et.strftime('%d')
-      "#{st.strftime('<strong>%H:%M</strong> %a, %-d %b')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
+      "#{st.strftime('%H:%M %a, %-d %b')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
     else
-      "#{st.strftime('<strong>%H:%M</strong>')} to <span>#{et.strftime('%H:%M, %a, %-d %b %Y (%Z)')}</span>"
+      "#{st.strftime('%H:%M')} to <span>#{et.strftime('%H:%M, %a, %-d %b %Y (%Z)')}</span>"
     end
   end
 

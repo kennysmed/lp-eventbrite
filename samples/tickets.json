@@ -24,18 +24,18 @@
 	    "url": "http://cakepocalypse.eventbrite.com",
 	    "privacy": "Public",
 	    "venue": {
-	      "city": "Houston",
-	      "name": "Cake Palace",
-	      "country": "United States",
-	      "region": "TX",
-	      "longitude": -95.106635,
-	      "postal_code": "77058",
+	      "city": "Harrogate",
+	      "name": "Harrogate Cake Palace",
+	      "country": "United Kingdom",
+	      "region": "",
+	      "longitude": -1.542919,
+	      "postal_code": "HG1 5LA",
 	      "address_2": "",
-	      "address": "2600 Bay Area Blvd",
-	      "latitude": 29.577086,
-	      "country_code": "US",
+	      "address": "Kings Road",
+	      "latitude": 53.995685,
+	      "country_code": "GB",
 	      "id": 1234569,
-	      "Lat-Long": "29.577086 / -95.106635"
+	      "Lat-Long": "53.995685 / -1.542919"
 	    },
 	    "start_date": "2013-06-25 09:00:00",
 	    "logo_ssl": "https://www.eventbrite.com/php/logo.php?id=7207528913-2.jpg",
@@ -46,13 +46,13 @@
 	      "description": "",
 	      "long_description": "",
 	      "id": 999999999,
-	      "name": "Cake Bakes Inc"
+	      "name": "Cake Bake Club"
 	    },
 	    "id": 2468013579
 	  },
 	  "modified": "2013-06-24 05:29:28",
 	  "delivery_method": "eTicket",
-	  "currency": "USD",
+	  "currency": "GBP",
 	  "payment_type": "free",
 	  "id": 1357924680
 	},

@@ -63,7 +63,7 @@ helpers do
     elsif st.strftime('%d') != et.strftime('%d')
       "#{st.strftime('%H:%M %a, %-d %b')} to <span>#{et.strftime('%H:%M %a, %-d %b %Y (%Z)')}</span>"
     else
-      "#{st.strftime('%H:%M')} to <span>#{et.strftime('%H:%M, %a, %-d %b %Y (%Z)')}</span>"
+      "#{st.strftime('%H:%M')} to #{et.strftime('%H:%M, <span>%a, %-d %b %Y (%Z)</span>')}"
     end
   end
 
@@ -162,6 +162,8 @@ get '/edition/' do
   access_token = params[:access_token]
   local_delivery_time = params[:local_delivery_time]
 
+  p "Starting for #{access_token}"
+
   eb_client = EventbriteClient.new({:access_token => access_token})
 
   # Get the raw user, event, ticket data from Eventbrite API:
@@ -197,19 +199,14 @@ get '/edition/' do
     return 500, "Something went wrong fetching tickets for the user: #{error}"
   end
 
-  if ticket_data.length == 0 && event_data.length == 0
-    etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
-    return 204, "No tickets found."
-  end
-
-  # We have some events/tickets, so we'll now see if they're tomorrow.
-
   # Get the next midnight datetime:
   printer_time = Time.strptime(local_delivery_time, '%Y-%m-%dT%H:%M:%S%z')
   printer_time_tomorrow = printer_time + 86400
   printer_time_tomorrow_midnight = Time.strptime(
     printer_time_tomorrow.strftime('%Y-%m-%dT00:00:00%z'),'%Y-%m-%dT%H:%M:%S%z'
   )
+
+  p "#{event_data.length} event(s) and #{ticket_data.length} ticket(s) fetched"
 
   # What we'll pass to the template.
   @events = []
@@ -223,7 +220,7 @@ get '/edition/' do
     Time.zone = event['event']['timezone']
     event_time = Time.zone.parse(event['event']['start_date'])
 
-    if event_time - printer_time_tomorrow_midnight < 86400
+    if event_time >= printer_time_tomorrow_midnight && event_time - printer_time_tomorrow_midnight <= 86400
       @events << event['event']
       event_ids << event['event']['id']
     end
@@ -236,17 +233,24 @@ get '/edition/' do
 
     # We want tickets for events starting tomorrow, but not if we've already
     # got them listed as events the user has organised.
-    if event_time - printer_time_tomorrow_midnight < 86400
+    if event_time >= printer_time_tomorrow_midnight && event_time - printer_time_tomorrow_midnight <= 86400
       if ! event_ids.include?(order['order']['event']['id'])
         @tickets << order['order']
       end
     end
   end
 
+  p "#{@events.length} event(s) and #{@tickets.length} ticket(s) start tomorrow"
+
   # @events and @tickets should now contain stuff we actually want to print.
 
   # Combine the event parts into a single array.
   @all_events = @events.dup + @tickets.map{|t| t['event']}
+
+  if @all_events.length == 0
+    etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
+    return 204, "No events or tickets found."
+  end
 
   # Using id or whatever user-unique entity we have at this point:
   etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))

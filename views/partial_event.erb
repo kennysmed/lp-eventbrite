@@ -1,21 +1,26 @@
-<% if count < 2 %>
+<% if count < @events_to_show_in_full %>
 
-	<div class="event">
-		<h3 class="event-title"><%= ev['title'] %></h3>
-		<% if ev['organizer']['name'] %>
-			<p class="event-org"><%= ev['organizer']['name'] %></p>
-		<% end %>
+	<section class="event">
+		<header class="event-header">
+			<h2 class="event-title"><%= ev['title'] %></h2>
+			<% if ev['organizer']['name'] %>
+				<p class="event-org"><%= ev['organizer']['name'] %></p>
+			<% end %>
+		</header>
 		<p class="event-time"><%= format_time_period(ev['start_date'], ev['end_date'], ev['timezone']) %></p>
 		<p class="event-address"><%= format_address(ev['venue']) %></p>
-		<p class="event-url"><%= format_url(ev['url']) %></p>
-	</div>
+		<footer class="event-footer">
+			<p class="event-url"><%= format_url(ev['url']) %></p>
+		</footer>
+	</section>
 
 <% else %>
 
-	<% if count == 2 %>
-		<h4 class="events-list-title">And also…</h4>
+	<% if count == @events_to_show_in_full %>
+		<h3 class="events-list-title">And also:</h3>
 		<ul class="events-list">
 	<% end %>
+
 	<li class="events-list-item"><%= ev['title'] %></li>
 
 <% end %>

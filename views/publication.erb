@@ -19,43 +19,51 @@
       font-size: 20px;
       line-height: 24px;
     }
-    h1 {
-      margin-bottom: 20px;
-      border: 2px solid #000;
-      border-radius: 8px;
-      padding: 12px
+    .pub-header {
+      background: url(<%= url('/img/top_rule.png') %>) 0 0 no-repeat; 
+      padding-top: 18px;
     }
-    h2 {
-      padding: 0 12px;
-    }
+      .pub-title {
+        font-weight: normal;
+        padding-left: 70px;
+        background: url(<%= url('img/eventbrite_icon.png') %>) 16px 3px no-repeat;
+      }
     .event {
-      border-radius: 8px;
-      border: 2px solid #000;
-      padding-top: 12px;
       margin-bottom: 24px;
     }
       .event .event-title,
       .event p {
-        padding-left: 12px;
-        padding-right: 12px;
+        padding-left: 15px;
+        padding-right: 15px;
       }
-      .event-title {
-        font-size: 28px;
-        line-height: 32px;
-        margin-bottom: 4px;
+      .event-header {
+        color: #fff;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: #000 url(<%= url('/img/scalloped_edge.png') %>) 0 100% no-repeat;
+        margin-bottom: 6px;
       }
-      .event-org {
-        border-bottom: 2px solid #000;
-        padding-bottom: 12px;
-      }
+        .event-title {
+          font-size: 28px;
+          line-height: 32px;
+          margin-bottom: 4px;
+          font-weight: normal;
+        }
       .event-time span {
         white-space: nowrap;
       }
-      .event-url {
-        border-top: 2px solid #000;
-        padding-top: 12px;
-        font-size: 16px;
+      .event-footer {
+          border-top: 2px solid #000;
+          padding-top: 12px;
+          background: url(<%= url('/img/diagonal_lines.png') %>) 0 0 repeat-y;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #000;
       }
+        .event-url {
+          font-size: 16px;
+          background: #fff;
+          margin-bottom: 0;
+        }
     .events-list-title {
       padding-left: 14px;
       margin-top: -10px;
@@ -63,12 +71,14 @@
     }
     .events-list {
       margin: 0 0 25px 0;
-      padding: 0;
+      padding: 0 10px;
     }
       .events-list-item {
-        padding: 0 0 0 10px;
+        padding: 0 0 0 15px;
         margin: 0 0 0 4px;
-        background: url(<%= url('/img/bullet.png') %>) 0 10px no-repeat;
+        background: url(<%= url('/img/bullet.png') %>) 0 9px no-repeat;
+        list-style-type: none;
+        font-weight: bold;
       }
 
   </style>
@@ -76,43 +86,21 @@
 </head>
 <body>
 
-  <h1>
-    Eventbrite Reminder for<br />
-    <%= @user['first_name'] %> <%= @user['last_name'] %>
-  </h1>
+  <header class="pub-header">
+    <h1 class="pub-title">
+      <%= @user['first_name'] %> <%= @user['last_name'] %>:
+      Your events tomorrow from Eventbrite
+    </h1>
+  </header>
 
-  <% if @events.length > 0 %>
-    <h2>
-      <% if @events.length == 1 %>
-        You have an event tomorrow!
-      <% else %>
-        <%= format_number_text(@events.length).capitalize %> of your events are tomorrow!
-      <% end %>
-    </h2>
+  <% @events_to_show_in_full = 3 %>
 
-    <% @events.each_with_index do |ev, n| %>
-      <%= erb :partial_event, :locals => {:ev => ev, :count => n} %>
-    <% end %>
-    <% if @events.length > 2 %>
-      </ul>
-    <% end %>
+  <% @all_events.each_with_index do |ev, n| %>
+    <%= erb :partial_event, :locals => {:ev => ev, :count => n} %>
   <% end %>
 
-  <% if @tickets.length > 0 %>
-    <h2>
-      <% if @tickets.length == 1 %>
-        You have a ticket for tomorrow!
-      <% else %>
-        You have <%= format_number_text(@tickets.length) %> tickets for tomorrow!
-      <% end %>
-    </h2>
-
-    <% @tickets.each_with_index do |tk, n| %>
-      <%= erb :partial_event, :locals => {:ev => tk['event'], :count => n} %>
-    <% end %>
-    <% if @tickets.length > 2 %>
-      </ul>
-    <% end %>
+  <% if @all_events.length > @events_to_show_in_full %>
+    </ul>
   <% end %>
 
 </body>

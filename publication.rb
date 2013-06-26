@@ -320,6 +320,8 @@ get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
     end
   end
 
+  @all_events = @events.dup + @tickets.map{|t| t['event']}
+
   etag Digest::MD5.hexdigest('sample' + Date.today.strftime('%d%m%Y'))
   erb :publication
 end

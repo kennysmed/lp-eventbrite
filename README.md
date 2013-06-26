@@ -16,12 +16,12 @@ or in a `config.yml` file in the root level of the directory:
     eventbrite_application_key: GB1234567890ABCDEF
     eventbrite_client_secret: 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCD
 
-[More about the Eventbrite API](http://developer.eventbrite.com/)
-
 This publication is a good example of:
 
 * Authenticating with Eventbrite using OAuth2.
 * Fetching data for a user from the Eventbrite API.
+
+[More about the Eventbrite API.](http://developer.eventbrite.com/)
 
 ----
 

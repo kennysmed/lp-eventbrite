@@ -245,6 +245,9 @@ get '/edition/' do
 
   # @events and @tickets should now contain stuff we actually want to print.
 
+  # Combine the event parts into a single array.
+  @all_events = @events.dup + @tickets.map{|t| t['event']}
+
   # Using id or whatever user-unique entity we have at this point:
   etag Digest::MD5.hexdigest(access_token + Date.today.strftime('%d%m%Y'))
   # Testing, always changing etag:
@@ -282,7 +285,7 @@ get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
   else
     # Standard sample.    
     show_events = 0 
-    show_tickets = 1
+    show_tickets = 2 
   end
 
   @user = {
@@ -320,6 +323,7 @@ get %r{/sample/(?:([\w]+)/([\d])/)?(?:([\w]+)/([\d])/)?} do
     end
   end
 
+  # Combine the event parts into a single array.
   @all_events = @events.dup + @tickets.map{|t| t['event']}
 
   etag Digest::MD5.hexdigest('sample' + Date.today.strftime('%d%m%Y'))

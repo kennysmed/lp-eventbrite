@@ -71,6 +71,7 @@ helpers do
   # Returns the HTML for a venue's address.
   def format_address(venue)
     lines = []
+    return if ! venue
     # The order we want the liens to appear in:
     if venue.include?('name') && venue['name'] != ''
       lines << "#{venue['name']}"
